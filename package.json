@@ -1,0 +1,24 @@
+{
+  "name": "mini-ai-chat-server",
+  "version": "1.0.0",
+  "description": "Node.js (Express.js) backend prototype for simulating character-based AI chat, featuring JWT auth, MongoDB models, and API endpoints for chat and history.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node src/config/seedData.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
