@@ -27,13 +27,9 @@ exports.login = async (req, res) => {
 
     //creates a JWT token
     const payload = {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email
-        //never includes password or sensitive data in JWT payload
-        //as tokens can be decoded easily even though they are signed
-      }
+      user
+      //never includes password or sensitive data in JWT payload
+      //as tokens can be decoded easily even though they are signed
     };
 
     jwt.sign(
