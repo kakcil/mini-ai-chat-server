@@ -18,12 +18,35 @@ const auth = require('../middleware/auth');
  *             type: object
  *             required: [userId, characterId, message]
  *             properties:
- *               userId: {type: string}
- *               characterId: {type: string}
- *               message: {type: string}
+ *               userId: {type: string, description: "User ID"}
+ *               characterId: {type: string, description: "Character ID"}
+ *               message: {type: string, description: "User message"}
  *     responses:
- *       200: {description: "AI character's response"}
+ *       200:
+ *         description: Full conversation including user message and AI response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: {type: boolean}
+ *                 conversation:
+ *                   type: object
+ *                   properties:
+ *                     userMessage:
+ *                       type: object
+ *                       properties:
+ *                         id: {type: string}
+ *                         text: {type: string}
+ *                         timestamp: {type: string, format: date-time}
+ *                     aiResponse:
+ *                       type: object
+ *                       properties:
+ *                         id: {type: string}
+ *                         text: {type: string}
+ *                         timestamp: {type: string, format: date-time}
  *       401: {description: "Authorization error"}
+ *       404: {description: "Character not found"}
  */
 router.post('/', auth, chatController.sendMessage);
 
@@ -38,7 +61,19 @@ router.post('/', auth, chatController.sendMessage);
  *       - {in: path, name: userId, required: true, schema: {type: string}}
  *       - {in: path, name: characterId, required: true, schema: {type: string}}
  *     responses:
- *       200: {description: "Chat message list"}
+ *       200:
+ *         description: List of chat messages
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id: {type: string}
+ *                   role: {type: string, enum: [user, ai]}
+ *                   text: {type: string}
+ *                   timestamp: {type: string, format: date-time}
  *       401: {description: "Authorization error"}
  */
 router.get('/history/:userId/:characterId', auth, chatController.getChatHistory);

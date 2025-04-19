@@ -28,25 +28,37 @@ exports.sendMessage = async (req, res) => {
     });
     await userMessage.save();
 
-    //simulates AI response
-    setTimeout(async () => {
-      //uses character's base prompt to generate response (instead of real LLM)
-      const aiResponse = `Response as ${character.name}: ${message.length > 10 ? 'That\'s an interesting topic!' : 'Can you provide more information?'}`;
+    //generates AI response - simulate a brief delay
+    const aiResponse = await new Promise(resolve => {
+      setTimeout(() => {
+        resolve(`Response as ${character.name}: ${message.length > 10 ? 'That\'s an interesting topic!' : 'Can you provide more information?'}`);
+      }, 1000); //small delay for Swagger testing (1s)
+    });
 
-      //saves AI response
-      const aiMessage = new Message({
-        userId,
-        characterId,
-        role: 'ai',
-        text: aiResponse
-      });
-      await aiMessage.save();
-    }, 500);
+    //saves AI response to database
+    const aiMessage = new Message({
+      userId,
+      characterId,
+      role: 'ai',
+      text: aiResponse
+    });
+    await aiMessage.save();
 
-    res.json({ 
-      success: true, 
-      message: 'Message sent, processing response...',
-      userMessageId: userMessage._id
+    //returns complete response for Swagger testing
+    res.json({
+      success: true,
+      conversation: {
+        userMessage: {
+          id: userMessage._id,
+          text: message,
+          timestamp: userMessage.timestamp
+        },
+        aiResponse: {
+          id: aiMessage._id,
+          text: aiResponse,
+          timestamp: aiMessage.timestamp
+        }
+      },
     });
 
   } catch (err) {
@@ -55,7 +67,7 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
-//GET /api/chat-history/:userId/:characterId
+//GET /api/chat/history/:userId/:characterId
 //gets chat history between user and character
 exports.getChatHistory = async (req, res) => {
   const { userId, characterId } = req.params;
@@ -72,7 +84,15 @@ exports.getChatHistory = async (req, res) => {
       characterId
     }).sort({ timestamp: 1 });
 
-    res.json(messages);
+    // Transform messages into a more readable format for Swagger
+    const formattedMessages = messages.map(msg => ({
+      id: msg._id,
+      role: msg.role,
+      text: msg.text,
+      timestamp: msg.timestamp
+    }));
+
+    res.json(formattedMessages);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
