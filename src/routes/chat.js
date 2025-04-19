@@ -70,7 +70,9 @@ router.post('/', auth, chatController.sendMessage);
  *               items:
  *                 type: object
  *                 properties:
- *                   id: {type: string}
+ *                   _id: {type: string}
+ *                   userId: {type: string}
+ *                   characterId: {type: string}
  *                   role: {type: string, enum: [user, ai]}
  *                   text: {type: string}
  *                   timestamp: {type: string, format: date-time}

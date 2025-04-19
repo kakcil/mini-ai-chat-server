@@ -86,7 +86,9 @@ exports.getChatHistory = async (req, res) => {
 
     // Transform messages into a more readable format for Swagger
     const formattedMessages = messages.map(msg => ({
-      id: msg._id,
+      _id: msg._id,
+      userId: msg.userId,
+      characterId: msg.characterId,
       role: msg.role,
       text: msg.text,
       timestamp: msg.timestamp
