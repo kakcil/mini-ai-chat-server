@@ -1,5 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const { swaggerUi, specs } = require('./config/swagger');
 require('dotenv').config();
 
 //start express app
@@ -10,6 +11,9 @@ app.use(express.json());
 
 //connects to db
 connectDB();
+
+//swagger API documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
 //defines routes
 const authRoutes = require('./routes/auth');
@@ -32,4 +36,5 @@ const PORT = process.env.PORT || 3000;
 //starts server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Swagger Documentation available at http://localhost:${PORT}/api-docs`);
 }); 
