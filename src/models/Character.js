@@ -8,13 +8,6 @@ const CharacterSchema = new mongoose.Schema({
   basePrompt: {
     type: String,
     required: true
-  },
-  description: {
-    type: String
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
 });
 

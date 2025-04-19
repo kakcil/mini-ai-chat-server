@@ -37,14 +37,13 @@ exports.getCharacterById = async (req, res) => {
 //POST /api/characters
 //creates new character
 exports.createCharacter = async (req, res) => {
-  const { name, basePrompt, description } = req.body;
+  const { name, basePrompt } = req.body;
 
   try {
     //creates new character
     const newCharacter = new Character({
       name,
-      basePrompt,
-      description
+      basePrompt
     });
 
     const character = await newCharacter.save();

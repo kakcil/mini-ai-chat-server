@@ -9,13 +9,11 @@ const auth = require('../middleware/auth');
  *   schemas:
  *     Character:
  *       type: object
- *       required: [name, description, personality]
+ *       required: [name, basePrompt]
  *       properties:
  *         id: {type: string}
  *         name: {type: string}
- *         description: {type: string}
- *         personality: {type: string}
- *         imageUrl: {type: string}
+ *         basePrompt: {type: string}
  */
 
 /**
@@ -64,7 +62,11 @@ router.get('/:id', auth, characterController.getCharacterById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Character'
+ *             type: object
+ *             required: [name, basePrompt]
+ *             properties:
+ *               name: {type: string}
+ *               basePrompt: {type: string}
  *     responses:
  *       201: {description: "Character created"}
  *       400: {description: "Invalid request"}
