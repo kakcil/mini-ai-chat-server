@@ -1,13 +1,23 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+//connects to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('MongoDB connection successful');
-  } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    process.exit(1);
+    const mongoURI = process.env.MONGODB_URI;
+    
+    //if no valid MongoDB URI is provided, log warning but don't crash
+    if (!mongoURI || !mongoURI.startsWith('mongodb')) {
+      console.log('Warning: Valid MongoDB URI not found. Running in mock DB mode.');
+      console.log('Set MONGODB_URI in .env file for real database connection.');
+      return; //returns without crashing
+    }
+    
+    await mongoose.connect(mongoURI);
+    console.log('MongoDB Connected...');
+  } catch (err) {
+    console.log('MongoDB connection error:', err.message);
+    //don't exit process so app can run in mock mode
   }
 };
 

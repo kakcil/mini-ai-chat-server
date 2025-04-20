@@ -11,6 +11,7 @@ A minimal backend prototype simulating the core logic of an AI chat platform usi
 - **GET /chat-history/:userId/:characterId**: Returns full message history
 - **MongoDB Models** for `User`, `Character`, and `Message`
 - **Swagger API Docs** for easy testing and exploration
+- **Unit Tests** for critical authentication and messaging functionality
 
 ---
 
@@ -20,6 +21,7 @@ A minimal backend prototype simulating the core logic of an AI chat platform usi
 - **Database**: MongoDB (with Mongoose)
 - **Auth**: JWT
 - **Docs**: Swagger
+- **Testing**: Jest, Supertest
 
 ---
 
@@ -125,3 +127,31 @@ There, you can:
 3. Create characters via `/api/characters`
 4. Send messages via `/api/chat`
 5. View history via `/api/chat/history/...`
+
+---
+
+## Running Tests
+
+The project includes unit tests for critical functionality:
+
+### Run All Tests
+```bash
+npm test
+```
+
+### Run Tests with Coverage Report
+```bash
+npm test -- --coverage
+```
+
+### Key Tests
+- **Authentication Tests**: Verifies JWT token generation and validation
+- **Chat API Tests**: Ensures proper request validation and message handling
+
+### Coverage Details
+- **Statement Coverage**: 55.14%
+- **Branch Coverage**: 23.33%
+- **Function Coverage**: 25%
+- **Line Coverage**: 55.97%
+
+The tests focus on critical functionality while maintaining a minimal test suite.
